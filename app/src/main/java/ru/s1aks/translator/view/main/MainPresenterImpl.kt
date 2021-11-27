@@ -10,26 +10,24 @@ import ru.s1aks.translator.presenter.Presenter
 import ru.s1aks.translator.rx.SchedulerProvider
 import ru.s1aks.translator.view.base.View
 
-class MainPresenterImpl<T : AppState, V : View>(
+class MainPresenterImpl<V : View>(
     private val interactor: MainInteractor = MainInteractor(
         RepositoryImplementation(DataSourceRemote()),
         RepositoryImplementation(DataSourceLocal())
     ),
     private val compositeDisposable: CompositeDisposable = CompositeDisposable(),
-    private val schedulerProvider: SchedulerProvider = SchedulerProvider()
-) : Presenter<T, V> {
+    private val schedulerProvider: SchedulerProvider = SchedulerProvider(),
+) : Presenter<V> {
 
     private var currentView: V? = null
 
     override fun attachView(view: V) {
-        if (view != currentView) {
-            currentView = view
-        }
+        currentView = view
     }
 
     override fun detachView(view: V) {
-        compositeDisposable.clear()
         if (view == currentView) {
+            compositeDisposable.clear()
             currentView = null
         }
     }

@@ -7,9 +7,9 @@ import ru.s1aks.translator.presenter.Presenter
 
 abstract class BaseActivity<T : AppState> : AppCompatActivity(), View {
 
-    protected lateinit var presenter: Presenter<T, View>
+    protected lateinit var presenter: Presenter<View>
 
-    protected abstract fun createPresenter(): Presenter<T, View>
+    protected abstract fun createPresenter(): Presenter<View>
 
     abstract override fun renderData(appState: AppState)
 

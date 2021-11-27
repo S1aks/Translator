@@ -37,10 +37,7 @@ class MainActivity : BaseActivity<AppState>() {
                     .isNotEmpty()
             ) {
                 presenter.getData(binding.searchEditText.text.toString(), true)
-            } else {
-                binding.searchEditText.error = "Not the right word!"
             }
-
         }
 
         override fun afterTextChanged(s: Editable?) {
@@ -48,7 +45,7 @@ class MainActivity : BaseActivity<AppState>() {
 
     }
 
-    override fun createPresenter(): Presenter<AppState, View> {
+    override fun createPresenter(): Presenter<View> {
         return MainPresenterImpl()
     }
 
