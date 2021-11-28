@@ -1,4 +1,4 @@
-package ru.s1aks.translator.model.datasource
+package ru.s1aks.translator.model.data.api
 
 import io.reactivex.Observable
 import retrofit2.http.GET

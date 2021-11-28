@@ -1,4 +1,4 @@
-package ru.s1aks.translator.presenter
+package ru.s1aks.translator.viewmodel
 
 import io.reactivex.Observable
 

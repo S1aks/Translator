@@ -8,6 +8,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.s1aks.translator.model.data.DataModel
+import ru.s1aks.translator.model.data.api.ApiService
+import ru.s1aks.translator.model.data.api.BaseInterceptor
 
 class RetrofitImplementation : DataSource<List<DataModel>> {
 
