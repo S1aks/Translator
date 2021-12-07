@@ -6,25 +6,18 @@ import android.text.TextWatcher
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.s1aks.translator.R
-import ru.s1aks.translator.application.TranslatorApp
 import ru.s1aks.translator.databinding.ActivityMainBinding
 import ru.s1aks.translator.model.data.AppState
 import ru.s1aks.translator.model.data.DataModel
 import ru.s1aks.translator.view.base.BaseActivity
 import ru.s1aks.translator.view.main.adapter.MainAdapter
-import javax.inject.Inject
 
 class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    override val model: MainViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
-    }
+    override val model: MainViewModel by viewModel()
 
     private lateinit var binding: ActivityMainBinding
 
@@ -56,8 +49,15 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        TranslatorApp.component.inject(this)
+        initViewModel()
+        initViews()
+    }
+
+    private fun initViewModel() {
         model.subscribe().observe(this, { renderData(it) })
+    }
+
+    private fun initViews() {
         binding.searchEditText.addTextChangedListener(textWatcher)
         binding.recyclerView.layoutManager = LinearLayoutManager(applicationContext)
         binding.recyclerView.adapter = adapter
