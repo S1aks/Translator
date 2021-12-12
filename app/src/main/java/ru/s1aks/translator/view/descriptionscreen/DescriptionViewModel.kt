@@ -1,4 +1,4 @@
-package ru.s1aks.translator.view.main
+package ru.s1aks.translator.view.descriptionscreen
 
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Dispatchers
@@ -8,7 +8,7 @@ import ru.s1aks.translator.model.data.AppState
 import ru.s1aks.translator.utils.parseOnlineSearchResults
 import ru.s1aks.translator.viewmodel.BaseViewModel
 
-class MainViewModel(private val interactor: MainInteractor) :
+class DescriptionViewModel(private val interactor: DescriptionInteractor) :
     BaseViewModel<AppState>() {
 
     private val liveDataForViewToObserve: LiveData<AppState> = _mutableLiveData
