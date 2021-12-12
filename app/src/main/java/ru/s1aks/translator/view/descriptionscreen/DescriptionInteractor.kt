@@ -1,4 +1,4 @@
-package ru.s1aks.translator.view.main
+package ru.s1aks.translator.view.descriptionscreen
 
 import ru.s1aks.translator.model.data.AppState
 import ru.s1aks.translator.model.data.DataModel
@@ -6,7 +6,7 @@ import ru.s1aks.translator.model.repository.Repository
 import ru.s1aks.translator.model.repository.RepositoryLocal
 import ru.s1aks.translator.viewmodel.Interactor
 
-class MainInteractor(
+class DescriptionInteractor(
     private val repositoryRemote: Repository<List<DataModel>>,
     private val repositoryLocal: RepositoryLocal<List<DataModel>>
 ) : Interactor<AppState> {

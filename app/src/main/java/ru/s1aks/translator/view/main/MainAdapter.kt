@@ -1,17 +1,18 @@
-package ru.s1aks.translator.view.main.adapter
+package ru.s1aks.translator.view.main
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import ru.s1aks.translator.R
+import ru.s1aks.translator.databinding.ActivityMainRecyclerviewItemBinding
 import ru.s1aks.translator.model.data.DataModel
 
 class MainAdapter(
     private var onListItemClickListener: OnListItemClickListener,
 ) : RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>() {
+
+    private lateinit var binding: ActivityMainRecyclerviewItemBinding
     private var data: List<DataModel>? = null
 
     @SuppressLint("NotifyDataSetChanged")
@@ -21,10 +22,11 @@ class MainAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
-        return RecyclerItemViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.activity_main_recyclerview_item, parent, false) as View
+        binding = ActivityMainRecyclerviewItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent, false
         )
+        return RecyclerItemViewHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
@@ -39,8 +41,8 @@ class MainAdapter(
 
         fun bind(data: DataModel) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
-                itemView.findViewById<TextView>(R.id.header_textview_recycler_item).text = data.text
-                itemView.findViewById<TextView>(R.id.description_textview_recycler_item).text =
+                binding.headerTextviewRecyclerItem.text = data.text
+                binding.descriptionTextviewRecyclerItem.text =
                     data.meanings?.get(0)?.translation?.translation
                 itemView.setOnClickListener { openInNewWindow(data) }
             }

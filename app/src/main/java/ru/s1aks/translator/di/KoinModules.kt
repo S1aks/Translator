@@ -1,23 +1,42 @@
 package ru.s1aks.translator.di
 
-import org.koin.core.qualifier.named
+import androidx.room.Room
 import org.koin.dsl.module
 import ru.s1aks.translator.model.data.DataModel
 import ru.s1aks.translator.model.datasource.RetrofitImplementation
 import ru.s1aks.translator.model.datasource.RoomDataBaseImplementation
 import ru.s1aks.translator.model.repository.Repository
 import ru.s1aks.translator.model.repository.RepositoryImplementation
+import ru.s1aks.translator.model.repository.RepositoryImplementationLocal
+import ru.s1aks.translator.model.repository.RepositoryLocal
+import ru.s1aks.translator.room.HistoryDataBase
+import ru.s1aks.translator.view.descriptionscreen.DescriptionInteractor
+import ru.s1aks.translator.view.descriptionscreen.DescriptionViewModel
+import ru.s1aks.translator.view.history.HistoryInteractor
+import ru.s1aks.translator.view.history.HistoryViewModel
 import ru.s1aks.translator.view.main.MainInteractor
 import ru.s1aks.translator.view.main.MainViewModel
 
 val application = module {
-    single<Repository<List<DataModel>>>(named(NAME_REMOTE)) { RepositoryImplementation(
-        RetrofitImplementation()) }
-    single<Repository<List<DataModel>>>(named(NAME_LOCAL)) { RepositoryImplementation(
-        RoomDataBaseImplementation()) }
+    single { Room.databaseBuilder(get(), HistoryDataBase::class.java, "HistoryDB").build() }
+    single { get<HistoryDataBase>().historyDao() }
+    single<Repository<List<DataModel>>> { RepositoryImplementation(RetrofitImplementation()) }
+    single<RepositoryLocal<List<DataModel>>> {
+        RepositoryImplementationLocal(RoomDataBaseImplementation(get()))
+    }
 }
 
 val mainScreen = module {
-    factory { MainInteractor(get(named(NAME_REMOTE)), get(named(NAME_LOCAL))) }
     factory { MainViewModel(get()) }
+    factory { MainInteractor(get(), get()) }
+}
+
+val historyScreen = module {
+    factory { HistoryViewModel(get()) }
+    factory { HistoryInteractor(get(), get()) }
+}
+
+val descriptionScreen = module {
+    factory { DescriptionViewModel(get()) }
+    factory { DescriptionInteractor(get(), get()) }
 }
