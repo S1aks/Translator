@@ -2,11 +2,10 @@ package ru.s1aks.translator.view.history
 
 import android.os.Bundle
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.s1aks.core.BaseActivity
+import ru.s1aks.model.data.AppState
+import ru.s1aks.model.data.DataModel
 import ru.s1aks.translator.databinding.ActivityHistoryBinding
-import ru.s1aks.translator.model.data.AppState
-import ru.s1aks.translator.model.data.DataModel
-import ru.s1aks.translator.utils.convertMeaningsToString
-import ru.s1aks.translator.view.base.BaseActivity
 import ru.s1aks.translator.view.descriptionscreen.DescriptionActivity
 
 class HistoryActivity : BaseActivity<AppState, HistoryInteractor>() {

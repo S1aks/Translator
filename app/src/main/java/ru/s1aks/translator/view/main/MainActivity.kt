@@ -8,14 +8,14 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.s1aks.core.BaseActivity
+import ru.s1aks.model.data.AppState
+import ru.s1aks.model.data.DataModel
 import ru.s1aks.translator.R
 import ru.s1aks.translator.databinding.ActivityMainBinding
-import ru.s1aks.translator.model.data.AppState
-import ru.s1aks.translator.model.data.DataModel
-import ru.s1aks.translator.utils.network.isOnline
-import ru.s1aks.translator.view.base.BaseActivity
 import ru.s1aks.translator.view.descriptionscreen.DescriptionActivity
 import ru.s1aks.translator.view.history.HistoryActivity
+import ru.s1aks.utils.network.isOnline
 
 class MainActivity : BaseActivity<AppState, MainInteractor>() {
 

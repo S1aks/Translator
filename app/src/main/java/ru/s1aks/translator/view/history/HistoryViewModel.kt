@@ -2,9 +2,9 @@ package ru.s1aks.translator.view.history
 
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.launch
-import ru.s1aks.translator.model.data.AppState
-import ru.s1aks.translator.utils.parseLocalSearchResults
-import ru.s1aks.translator.viewmodel.BaseViewModel
+import ru.s1aks.core.viewmodel.BaseViewModel
+import ru.s1aks.model.data.AppState
+import ru.s1aks.repository.parseLocalSearchResults
 
 class HistoryViewModel(private val interactor: HistoryInteractor) :
     BaseViewModel<AppState>() {

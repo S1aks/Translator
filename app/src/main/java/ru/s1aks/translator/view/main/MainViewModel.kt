@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.s1aks.translator.model.data.AppState
-import ru.s1aks.translator.utils.parseOnlineSearchResults
-import ru.s1aks.translator.viewmodel.BaseViewModel
+import ru.s1aks.core.viewmodel.BaseViewModel
+import ru.s1aks.model.data.AppState
+import ru.s1aks.repository.parseOnlineSearchResults
 
 class MainViewModel(private val interactor: MainInteractor) :
     BaseViewModel<AppState>() {

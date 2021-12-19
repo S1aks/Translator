@@ -8,14 +8,14 @@ import android.widget.ImageView
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.s1aks.core.BaseActivity
+import ru.s1aks.model.data.AppState
+import ru.s1aks.model.data.DataModel
 import ru.s1aks.translator.R
 import ru.s1aks.translator.databinding.ActivityDescriptionBinding
-import ru.s1aks.translator.model.data.AppState
-import ru.s1aks.translator.model.data.DataModel
-import ru.s1aks.translator.utils.convertMeaningsToString
-import ru.s1aks.translator.utils.network.isOnline
-import ru.s1aks.translator.utils.ui.AlertDialogFragment
-import ru.s1aks.translator.view.base.BaseActivity
+import ru.s1aks.repository.convertMeaningsToString
+import ru.s1aks.utils.network.isOnline
+import ru.s1aks.utils.ui.AlertDialogFragment
 
 class DescriptionActivity : BaseActivity<AppState, DescriptionInteractor>() {
 
