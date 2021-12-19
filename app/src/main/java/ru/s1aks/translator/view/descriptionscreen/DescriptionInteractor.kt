@@ -1,10 +1,10 @@
 package ru.s1aks.translator.view.descriptionscreen
 
-import ru.s1aks.translator.model.data.AppState
-import ru.s1aks.translator.model.data.DataModel
-import ru.s1aks.translator.model.repository.Repository
-import ru.s1aks.translator.model.repository.RepositoryLocal
-import ru.s1aks.translator.viewmodel.Interactor
+import ru.s1aks.core.viewmodel.Interactor
+import ru.s1aks.model.data.AppState
+import ru.s1aks.model.data.DataModel
+import ru.s1aks.repository.Repository
+import ru.s1aks.repository.RepositoryLocal
 
 class DescriptionInteractor(
     private val repositoryRemote: Repository<List<DataModel>>,

@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.s1aks.model.data.DataModel
 import ru.s1aks.translator.databinding.ActivityMainRecyclerviewItemBinding
-import ru.s1aks.translator.model.data.DataModel
 
 class MainAdapter(
     private var onListItemClickListener: OnListItemClickListener,
