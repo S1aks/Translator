@@ -1,3 +1,5 @@
+@file:Suppress("NonExhaustiveWhenStatementMigration")
+
 package ru.s1aks.translator.utils
 
 import ru.s1aks.translator.model.data.AppState
