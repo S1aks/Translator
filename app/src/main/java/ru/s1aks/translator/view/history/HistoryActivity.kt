@@ -1,18 +1,20 @@
 package ru.s1aks.translator.view.history
 
 import android.os.Bundle
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.scope.AndroidScopeComponent
+import org.koin.androidx.scope.activityScope
+import org.koin.core.scope.Scope
 import ru.s1aks.translator.databinding.ActivityHistoryBinding
 import ru.s1aks.translator.model.data.AppState
 import ru.s1aks.translator.model.data.DataModel
-import ru.s1aks.translator.utils.convertMeaningsToString
 import ru.s1aks.translator.view.base.BaseActivity
 import ru.s1aks.translator.view.descriptionscreen.DescriptionActivity
 
-class HistoryActivity : BaseActivity<AppState, HistoryInteractor>() {
+class HistoryActivity : BaseActivity<AppState, HistoryInteractor>(), AndroidScopeComponent {
 
+    override val scope: Scope by activityScope()
+    override val model: HistoryViewModel by scope.inject()
     private lateinit var binding: ActivityHistoryBinding
-    override val model: HistoryViewModel by viewModel()
     private val adapter: HistoryAdapter by lazy { HistoryAdapter(onListItemClickListener) }
     private val onListItemClickListener: HistoryAdapter.OnListItemClickListener =
         object : HistoryAdapter.OnListItemClickListener {

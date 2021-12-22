@@ -2,7 +2,6 @@ package ru.s1aks.translator.view.main
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.s1aks.translator.databinding.ActivityMainRecyclerviewItemBinding
@@ -26,7 +25,7 @@ class MainAdapter(
             LayoutInflater.from(parent.context),
             parent, false
         )
-        return RecyclerItemViewHolder(binding.root)
+        return RecyclerItemViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
@@ -37,12 +36,14 @@ class MainAdapter(
         return data?.size ?: 0
     }
 
-    inner class RecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class RecyclerItemViewHolder(
+        private val itemBinding: ActivityMainRecyclerviewItemBinding,
+    ) : RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(data: DataModel) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
-                binding.headerTextviewRecyclerItem.text = data.text
-                binding.descriptionTextviewRecyclerItem.text =
+                itemBinding.headerTextviewRecyclerItem.text = data.text
+                itemBinding.descriptionTextviewRecyclerItem.text =
                     data.meanings?.get(0)?.translation?.translation
                 itemView.setOnClickListener { openInNewWindow(data) }
             }

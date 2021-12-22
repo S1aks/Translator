@@ -4,30 +4,51 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import ru.s1aks.translator.R
 import ru.s1aks.translator.databinding.LoadingLayoutBinding
 import ru.s1aks.translator.model.data.AppState
 import ru.s1aks.translator.model.data.DataModel
-import ru.s1aks.translator.utils.network.isOnline
+import ru.s1aks.translator.utils.network.OnlineLiveData
 import ru.s1aks.translator.utils.ui.AlertDialogFragment
+import ru.s1aks.translator.utils.ui.viewById
 import ru.s1aks.translator.viewmodel.BaseViewModel
 import ru.s1aks.translator.viewmodel.Interactor
+
+const val DIALOG_FRAGMENT_TAG = "74a54328-5d62-46bf-ab6b-cbf5d8c79522"
 
 abstract class BaseActivity<T : AppState, I : Interactor<T>> : AppCompatActivity() {
 
     private lateinit var binding: LoadingLayoutBinding
     abstract val model: BaseViewModel<T>
-    protected var isNetworkAvailable: Boolean = false
+    protected var isNetworkAvailable: Boolean = true
+    private val snackbarNetwork: Snackbar
+        get() {
+            val mainView by viewById<View>(android.R.id.content)
+            return Snackbar.make(mainView.rootView, resources.getString(R.string.dialog_message_device_is_offline), Snackbar.LENGTH_INDEFINITE)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
-        isNetworkAvailable = isOnline(applicationContext)
+        subscribeToNetworkChange()
+    }
+
+    private fun subscribeToNetworkChange() {
+        OnlineLiveData(this).observe(
+            this@BaseActivity,
+            {
+                isNetworkAvailable = it
+                if (!isNetworkAvailable) {
+                    snackbarNetwork.show()
+                } else {
+                    snackbarNetwork.dismiss()
+                }
+            })
     }
 
     override fun onResume() {
         super.onResume()
         binding = LoadingLayoutBinding.inflate(layoutInflater)
-        isNetworkAvailable = isOnline(applicationContext)
         if (!isNetworkAvailable && isDialogNull()) {
             showNoInternetConnectionDialog()
         }
@@ -73,7 +94,7 @@ abstract class BaseActivity<T : AppState, I : Interactor<T>> : AppCompatActivity
         )
     }
 
-    private fun showAlertDialog(title: String?, message: String?) {
+    protected fun showAlertDialog(title: String?, message: String?) {
         AlertDialogFragment.newInstance(title, message)
             .show(supportFragmentManager, DIALOG_FRAGMENT_TAG)
     }
@@ -91,8 +112,4 @@ abstract class BaseActivity<T : AppState, I : Interactor<T>> : AppCompatActivity
     }
 
     abstract fun setDataToView(data: List<DataModel>)
-
-    companion object {
-        const val DIALOG_FRAGMENT_TAG = "74a54328-5d62-46bf-ab6b-cbf5d8c79522"
-    }
 }
