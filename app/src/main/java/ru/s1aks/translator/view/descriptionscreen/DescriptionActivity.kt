@@ -7,20 +7,22 @@ import android.view.MenuItem
 import android.widget.ImageView
 import coil.load
 import coil.transform.RoundedCornersTransformation
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.scope.AndroidScopeComponent
+import org.koin.androidx.scope.activityScope
+import org.koin.core.scope.Scope
 import ru.s1aks.translator.R
 import ru.s1aks.translator.databinding.ActivityDescriptionBinding
 import ru.s1aks.translator.model.data.AppState
 import ru.s1aks.translator.model.data.DataModel
 import ru.s1aks.translator.utils.convertMeaningsToString
-import ru.s1aks.translator.utils.network.isOnline
-import ru.s1aks.translator.utils.ui.AlertDialogFragment
+import ru.s1aks.translator.utils.network.OnlineLiveData
 import ru.s1aks.translator.view.base.BaseActivity
 
-class DescriptionActivity : BaseActivity<AppState, DescriptionInteractor>() {
+class DescriptionActivity : BaseActivity<AppState, DescriptionInteractor>(), AndroidScopeComponent {
 
+    override val scope: Scope by activityScope()
+    override val model: DescriptionViewModel by scope.inject()
     private lateinit var binding: ActivityDescriptionBinding
-    override val model: DescriptionViewModel by viewModel()
     private var searchWord: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,18 +73,16 @@ class DescriptionActivity : BaseActivity<AppState, DescriptionInteractor>() {
     }
 
     private fun startLoadingOrShowError() {
-        if (isOnline(applicationContext)) {
-            searchWord?.let { model.getData(it, true) }
-        } else {
-            AlertDialogFragment.newInstance(
-                getString(R.string.dialog_title_device_is_offline),
-                getString(R.string.dialog_message_device_is_offline)
-            ).show(
-                supportFragmentManager,
-                DIALOG_FRAGMENT_TAG
-            )
-            stopRefreshAnimationIfNeeded()
-        }
+        OnlineLiveData(this).observe(
+            this@DescriptionActivity,
+            {
+                if (it) {
+                    searchWord?.let { word -> model.getData(word, true) }
+                } else {
+                    showNoInternetConnectionDialog()
+                    stopRefreshAnimationIfNeeded()
+                }
+            })
     }
 
     private fun stopRefreshAnimationIfNeeded() {

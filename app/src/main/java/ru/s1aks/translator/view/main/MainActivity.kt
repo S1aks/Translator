@@ -6,21 +6,26 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.recyclerview.widget.RecyclerView
+import org.koin.android.scope.AndroidScopeComponent
+import org.koin.androidx.scope.*
+import org.koin.core.scope.Scope
 import ru.s1aks.translator.R
-import ru.s1aks.translator.databinding.ActivityMainBinding
 import ru.s1aks.translator.model.data.AppState
 import ru.s1aks.translator.model.data.DataModel
-import ru.s1aks.translator.utils.network.isOnline
+import ru.s1aks.translator.utils.ui.viewById
 import ru.s1aks.translator.view.base.BaseActivity
 import ru.s1aks.translator.view.descriptionscreen.DescriptionActivity
 import ru.s1aks.translator.view.history.HistoryActivity
 
-class MainActivity : BaseActivity<AppState, MainInteractor>() {
+class MainActivity : BaseActivity<AppState, MainInteractor>(), AndroidScopeComponent {
 
-    private lateinit var binding: ActivityMainBinding
-    override val model: MainViewModel by viewModel()
+    override val scope: Scope by activityScope()
+    override val model: MainViewModel by scope.inject()
+    private val searchEditText by viewById<EditText>(R.id.search_edit_text)
+    private val recyclerView by viewById<RecyclerView>(R.id.recycler_view)
     private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener) }
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
@@ -39,12 +44,11 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (binding.searchEditText.text != null && binding.searchEditText.text.toString()
+            if (searchEditText.text != null && searchEditText.text.toString()
                     .isNotEmpty()
             ) {
-                isNetworkAvailable = isOnline(applicationContext)
                 if (isNetworkAvailable) {
-                    model.getData(binding.searchEditText.text.toString(), true)
+                    model.getData(searchEditText.text.toString(), true)
                 } else {
                     showNoInternetConnectionDialog()
                 }
@@ -57,8 +61,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_main)
         initViewModel()
         initViews()
     }
@@ -68,13 +71,9 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
     }
 
     private fun initViews() {
-        binding.searchEditText.addTextChangedListener(textWatcher)
-        binding.recyclerView.layoutManager = LinearLayoutManager(applicationContext)
-        binding.recyclerView.adapter = adapter
-    }
-
-    override fun setDataToView(data: List<DataModel>) {
-        adapter.setData(data)
+        searchEditText.addTextChangedListener(textWatcher)
+        recyclerView.layoutManager = LinearLayoutManager(applicationContext)
+        recyclerView.adapter = adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -91,4 +90,9 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    override fun setDataToView(data: List<DataModel>) {
+        adapter.setData(data)
+    }
 }
+
