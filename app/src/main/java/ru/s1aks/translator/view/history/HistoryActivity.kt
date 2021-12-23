@@ -5,7 +5,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.s1aks.translator.databinding.ActivityHistoryBinding
 import ru.s1aks.translator.model.data.AppState
 import ru.s1aks.translator.model.data.DataModel
-import ru.s1aks.translator.utils.convertMeaningsToString
 import ru.s1aks.translator.view.base.BaseActivity
 import ru.s1aks.translator.view.descriptionscreen.DescriptionActivity
 

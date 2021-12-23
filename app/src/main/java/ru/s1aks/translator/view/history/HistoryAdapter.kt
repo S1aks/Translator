@@ -2,7 +2,6 @@ package ru.s1aks.translator.view.history
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.s1aks.translator.databinding.ActivityHistoryRecyclerviewItemBinding
@@ -26,7 +25,7 @@ class HistoryAdapter(
             LayoutInflater.from(parent.context),
             parent, false
         )
-        return RecyclerItemViewHolder(binding.root)
+        return RecyclerItemViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
@@ -37,11 +36,13 @@ class HistoryAdapter(
         return data.size
     }
 
-    inner class RecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class RecyclerItemViewHolder(
+        private val itemBinding: ActivityHistoryRecyclerviewItemBinding
+    ) : RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(data: DataModel) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
-                binding.headerHistoryTextviewRecyclerItem.text = data.text
+                itemBinding.headerHistoryTextviewRecyclerItem.text = data.text
                 itemView.setOnClickListener { openInNewWindow(data) }
             }
         }

@@ -13,8 +13,6 @@ import ru.s1aks.translator.databinding.ActivityDescriptionBinding
 import ru.s1aks.translator.model.data.AppState
 import ru.s1aks.translator.model.data.DataModel
 import ru.s1aks.translator.utils.convertMeaningsToString
-import ru.s1aks.translator.utils.network.isOnline
-import ru.s1aks.translator.utils.ui.AlertDialogFragment
 import ru.s1aks.translator.view.base.BaseActivity
 
 class DescriptionActivity : BaseActivity<AppState, DescriptionInteractor>() {
@@ -71,16 +69,10 @@ class DescriptionActivity : BaseActivity<AppState, DescriptionInteractor>() {
     }
 
     private fun startLoadingOrShowError() {
-        if (isOnline(applicationContext)) {
-            searchWord?.let { model.getData(it, true) }
+        if (isNetworkAvailable) {
+            searchWord?.let { word -> model.getData(word, true) }
         } else {
-            AlertDialogFragment.newInstance(
-                getString(R.string.dialog_title_device_is_offline),
-                getString(R.string.dialog_message_device_is_offline)
-            ).show(
-                supportFragmentManager,
-                DIALOG_FRAGMENT_TAG
-            )
+            searchWord?.let { word -> model.getData(word, false) }
             stopRefreshAnimationIfNeeded()
         }
     }
